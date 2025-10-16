@@ -9,7 +9,6 @@ export function useProducts(params: ApiParams) {
     queryKey: ['products', params],
     queryFn: () => getProducts(params),
     enabled: true,
-    keepPreviousData: true, // Keep previous data while loading new data
     staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
     refetchOnWindowFocus: false, // Prevent unnecessary refetches
   });

@@ -291,7 +291,7 @@ export default function AddProductPage() {
                   onFilesChange={(files) =>
                     setValue("thumbnail", files[0] || "")
                   }
-                  value={watch("thumbnail") ? [watch("thumbnail")] : []}
+                  value={watch("thumbnail") ? [watch("thumbnail")!] : []}
                   disabled={isSubmitting}
                   multiple={false}
                   maxSize={5}

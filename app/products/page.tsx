@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useMemo, useState, useEffect } from "react";
+import { useCallback, useMemo, useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import { useProducts, useCategories, useBrands } from "@/hooks/useProducts";
 import { ProductFilters, ApiParams, ProductsResponse } from "@/types/product";
 import { ProductCard } from "@/components/products/ProductCard";
@@ -18,7 +19,7 @@ import { CartSidebar } from "@/components/cart/CartSidebar";
 import { WishlistIcon } from "@/components/wishlist/WishlistIcon";
 import { cn } from "@/lib/utils";
 
-export default function ProductsPage() {
+function ProductsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
@@ -33,12 +34,20 @@ export default function ProductsPage() {
   const search = searchParams.get("search") || "";
   const brand = searchParams.get("brand") || ""; // Keep for backward compatibility
   const category = searchParams.get("category") || ""; // Keep for backward compatibility
-  const brands = searchParams.get("brands")
-    ? searchParams.get("brands")!.split(",").filter(Boolean)
-    : [];
-  const categories = searchParams.get("categories")
-    ? searchParams.get("categories")!.split(",").filter(Boolean)
-    : [];
+  const brands = useMemo(
+    () =>
+      searchParams.get("brands")
+        ? searchParams.get("brands")!.split(",").filter(Boolean)
+        : [],
+    [searchParams]
+  );
+  const categories = useMemo(
+    () =>
+      searchParams.get("categories")
+        ? searchParams.get("categories")!.split(",").filter(Boolean)
+        : [],
+    [searchParams]
+  );
   const priceMin = searchParams.get("priceMin")
     ? parseFloat(searchParams.get("priceMin")!)
     : undefined;
@@ -173,9 +182,12 @@ export default function ProductsPage() {
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-50 to-primary-50 px-4 py-2 text-[#962189] rounded-full text-sm font-medium text-brand-700 mb-6 animate-float">
               <div className="w-15 h-15 bg-gradient-to-r from-brand-500 to-primary-500 rounded-full animate-pulse  ">
-                <img
+                <Image
                   src="https://lotusbetaanalytics.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FlotusLogo.33d6391f.png&w=128&q=75"
                   alt="lotus logo"
+                  width={60}
+                  height={60}
+                  className="rounded-full"
                 />
               </div>
               Lotus Product Dashboard
@@ -585,5 +597,13 @@ export default function ProductsPage() {
       {/* Cart Sidebar */}
       <CartSidebar />
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProductsPageContent />
+    </Suspense>
   );
 }

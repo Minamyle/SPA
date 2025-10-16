@@ -21,7 +21,6 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
@@ -45,8 +44,6 @@ export default function LoginPage() {
       } else {
         setSubmitError(result.error || "Login failed");
       }
-    } catch (error) {
-      setSubmitError("An unexpected error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

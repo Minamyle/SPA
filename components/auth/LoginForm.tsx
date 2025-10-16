@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuth } from '@/hooks/useAuth';
-import { loginSchema, LoginFormData } from '@/lib/schemas';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/hooks/useAuth";
+import { loginSchema, LoginFormData } from "@/lib/schemas";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 
 interface LoginFormProps {
   onLoginSuccess: () => void;
@@ -16,7 +16,7 @@ interface LoginFormProps {
 export function LoginForm({ onLoginSuccess }: LoginFormProps) {
   const { login } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState('');
+  const [submitError, setSubmitError] = useState("");
 
   const {
     register,
@@ -28,18 +28,16 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
 
   const onSubmit = async (data: LoginFormData) => {
     setIsSubmitting(true);
-    setSubmitError('');
+    setSubmitError("");
 
     try {
       const result = await login(data.username, data.password);
-      
+
       if (result.success) {
         onLoginSuccess();
       } else {
-        setSubmitError(result.error || 'Login failed');
+        setSubmitError(result.error || "Login failed");
       }
-    } catch (error) {
-      setSubmitError('An unexpected error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -67,8 +65,16 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
                 <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
                   <div className="flex">
                     <div className="flex-shrink-0">
-                      <svg className="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                      <svg
+                        className="h-5 w-5 text-red-400"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                     </div>
                     <div className="ml-3">
@@ -82,7 +88,7 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
 
               <Input
                 label="Username"
-                {...register('username')}
+                {...register("username")}
                 error={errors.username?.message}
                 placeholder="Enter your username"
                 autoComplete="username"
@@ -92,7 +98,7 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
               <Input
                 label="Password"
                 type="password"
-                {...register('password')}
+                {...register("password")}
                 error={errors.password?.message}
                 placeholder="Enter your password"
                 autoComplete="current-password"
@@ -105,7 +111,7 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
                 loading={isSubmitting}
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Signing in...' : 'Sign In'}
+                {isSubmitting ? "Signing in..." : "Sign In"}
               </Button>
             </form>
 
@@ -114,7 +120,8 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
                 Demo Credentials
               </h3>
               <p className="text-sm text-blue-700 dark:text-blue-300">
-                Username: <strong>admin</strong><br />
+                Username: <strong>admin</strong>
+                <br />
                 Password: <strong>password</strong>
               </p>
             </div>
