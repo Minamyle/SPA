@@ -80,7 +80,7 @@ export function MultiSelect({
   return (
     <div className={cn('relative', className)}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-foreground mb-2">
           {label}
         </label>
       )}
@@ -92,21 +92,21 @@ export function MultiSelect({
           onClick={() => !disabled && setIsOpen(!isOpen)}
           disabled={disabled}
           className={cn(
-            'w-full flex items-center justify-between px-3 py-2 text-left border rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
-            disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-gray-400',
-            isOpen ? 'border-blue-500' : 'border-gray-300 dark:border-gray-600'
+            'w-full flex items-center justify-between px-3 py-2 text-left border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 transition-all duration-200',
+            disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-ring/50 hover:shadow-sm',
+            isOpen ? 'border-ring shadow-md' : 'border-input'
           )}
         >
           <span className="block truncate">
             {selectedCount === 0 ? (
-              <span className="text-gray-500 dark:text-gray-400">{placeholder}</span>
+              <span className="text-muted-foreground">{placeholder}</span>
             ) : (
               <span className="flex items-center gap-1">
-                <span className="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded text-xs font-medium">
+                <span className="bg-primary/10 text-primary px-2 py-1 rounded-md text-xs font-medium">
                   {selectedCount} selected
                 </span>
                 {selectedCount <= 3 && (
-                  <span className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                  <span className="text-sm text-muted-foreground truncate">
                     {value.slice(0, 3).map(v => options.find(opt => opt.value === v)?.label).join(', ')}
                   </span>
                 )}
@@ -116,7 +116,7 @@ export function MultiSelect({
           
           <svg
             className={cn(
-              'w-4 h-4 transition-transform text-gray-400',
+              'w-4 h-4 transition-transform text-muted-foreground',
               isOpen && 'transform rotate-180'
             )}
             fill="none"
@@ -129,24 +129,24 @@ export function MultiSelect({
 
         {/* Dropdown */}
         {isOpen && (
-          <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg">
+          <div className="absolute z-50 w-full mt-1 bg-popover border border-outline rounded-lg shadow-lg backdrop-blur-sm">
             {/* Search */}
-            <div className="p-2 border-b border-gray-200 dark:border-gray-700">
+            <div className="p-3 border-b border-outline">
               <input
                 type="text"
                 placeholder="Search options..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 py-2 text-sm border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 transition-all duration-200"
               />
             </div>
 
             {/* Select All / Clear All */}
-            <div className="flex items-center justify-between p-2 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between p-3 border-b border-outline">
               <button
                 type="button"
                 onClick={handleSelectAll}
-                className="text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+                className="text-xs text-primary hover:text-primary/80 font-medium transition-colors"
               >
                 {allFilteredSelected ? 'Deselect All' : 'Select All'}
               </button>
@@ -154,7 +154,7 @@ export function MultiSelect({
                 <button
                   type="button"
                   onClick={handleClearAll}
-                  className="text-xs text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium"
+                  className="text-xs text-destructive hover:text-destructive/80 font-medium transition-colors"
                 >
                   Clear All
                 </button>
@@ -167,22 +167,22 @@ export function MultiSelect({
               style={{ maxHeight }}
             >
               {filteredOptions.length === 0 ? (
-                <div className="p-3 text-sm text-gray-500 dark:text-gray-400 text-center">
+                <div className="p-4 text-sm text-muted-foreground text-center">
                   No options found
                 </div>
               ) : (
                 filteredOptions.map((option) => (
                   <label
                     key={option.value}
-                    className="flex items-center p-2 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
+                    className="flex items-center p-3 hover:bg-accent/50 cursor-pointer transition-colors group"
                   >
                     <input
                       type="checkbox"
                       checked={value.includes(option.value)}
                       onChange={() => handleToggleOption(option.value)}
-                      className="mr-3 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+                      className="mr-3 h-4 w-4 text-primary border-input rounded focus:ring-2 focus:ring-ring focus:ring-offset-1 transition-all"
                     />
-                    <span className="text-sm text-gray-900 dark:text-gray-100 flex-1">
+                    <span className="text-sm text-foreground flex-1 group-hover:text-accent-foreground transition-colors">
                       {option.label}
                     </span>
                   </label>

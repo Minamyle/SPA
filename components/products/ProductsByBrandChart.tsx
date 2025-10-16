@@ -54,11 +54,14 @@ export function ProductsByBrandChart({ products, className }: ProductsByBrandCha
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-white dark:bg-gray-800 p-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
-          <p className="font-medium text-gray-900 dark:text-gray-100">{data.fullBrand}</p>
-          <p className="text-blue-600 dark:text-blue-400">
-            Products: <span className="font-semibold">{data.count}</span>
-          </p>
+        <div className="bg-background/95 backdrop-blur-md p-4 border border-border/50 rounded-xl shadow-lg">
+          <p className="font-medium text-card-foreground mb-1">{data.fullBrand}</p>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-gradient-to-r from-brand-500 to-primary-500"></div>
+            <p className="text-sm text-muted-foreground">
+              <span className="font-semibold text-card-foreground">{data.count}</span> products
+            </p>
+          </div>
         </div>
       );
     }
@@ -69,21 +72,43 @@ export function ProductsByBrandChart({ products, className }: ProductsByBrandCha
     <div className={cn('h-64 w-full', className)}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+          <defs>
+            <linearGradient id="brandGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity={0.8} />
+              <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid 
+            strokeDasharray="3 3" 
+            stroke="hsl(var(--muted-foreground))" 
+            opacity={0.2}
+          />
           <XAxis 
             dataKey="brand" 
-            tick={{ fontSize: 12 }}
+            tick={{ 
+              fontSize: 12, 
+              fill: 'hsl(var(--muted-foreground))'
+            }}
             angle={-45}
             textAnchor="end"
             height={80}
+            axisLine={false}
+            tickLine={false}
           />
-          <YAxis tick={{ fontSize: 12 }} />
+          <YAxis 
+            tick={{ 
+              fontSize: 12, 
+              fill: 'hsl(var(--muted-foreground))'
+            }}
+            axisLine={false}
+            tickLine={false}
+          />
           <Tooltip content={<CustomTooltip />} />
           <Bar 
             dataKey="count" 
-            fill="#3B82F6"
-            radius={[2, 2, 0, 0]}
-            className="hover:opacity-80 transition-opacity"
+            fill="url(#brandGradient)"
+            radius={[8, 8, 0, 0]}
+            className="hover:opacity-80 transition-all duration-300"
           />
         </BarChart>
       </ResponsiveContainer>

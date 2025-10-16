@@ -2,47 +2,82 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 interface LoadingSpinnerProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  variant?: 'default' | 'primary' | 'electric' | 'minimal';
   className?: string;
   text?: string;
 }
 
 export function LoadingSpinner({ 
   size = 'md', 
+  variant = 'default',
   className,
   text 
 }: LoadingSpinnerProps) {
   const sizes = {
+    xs: 'h-3 w-3',
     sm: 'h-4 w-4',
     md: 'h-8 w-8',
     lg: 'h-12 w-12',
+    xl: 'h-16 w-16',
   };
+
+  const variants = {
+    default: 'text-primary',
+    primary: 'text-primary drop-shadow-brand',
+    electric: 'text-electric-500 drop-shadow-electric',
+    minimal: 'text-muted-foreground',
+  };
+
+  if (variant === 'minimal') {
+    return (
+      <div className={cn('flex items-center justify-center', className)}>
+        <div className="flex flex-col items-center space-y-3">
+          <div className={cn('animate-spin', sizes[size])}>
+            <div className={cn('rounded-full border-2 border-current border-r-transparent', variants[variant])} 
+                 style={{ width: '100%', height: '100%' }} />
+          </div>
+          {text && (
+            <p className="text-sm text-muted-foreground font-medium">
+              {text}
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={cn('flex items-center justify-center', className)}>
-      <div className="flex flex-col items-center space-y-2">
-        <svg
-          className={cn('animate-spin text-blue-600', sizes[size])}
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          />
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          />
-        </svg>
+      <div className="flex flex-col items-center space-y-3">
+        <div className="relative">
+          {/* Outer ring */}
+          <div className={cn(
+            'animate-spin rounded-full border-2 border-muted-foreground/20',
+            sizes[size]
+          )}>
+            <div className={cn(
+              'h-full w-full rounded-full border-2 border-transparent border-t-current animate-spin',
+              variants[variant]
+            )} style={{ animationDuration: '1s' }} />
+          </div>
+          
+          {/* Inner glow effect for primary and electric variants */}
+          {(variant === 'primary' || variant === 'electric') && (
+            <div className={cn(
+              'absolute inset-0 rounded-full animate-pulse',
+              variant === 'primary' ? 'bg-primary/10' : 'bg-electric-500/10'
+            )} />
+          )}
+        </div>
+        
         {text && (
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className={cn(
+            'text-sm font-medium animate-pulse',
+            variant === 'primary' ? 'text-primary' :
+            variant === 'electric' ? 'text-electric-600' :
+            'text-muted-foreground'
+          )}>
             {text}
           </p>
         )}

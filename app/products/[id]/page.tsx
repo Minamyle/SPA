@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useParams, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import Image from 'next/image';
-import { useProduct } from '@/hooks/useProducts';
-import { StructuredData } from '@/components/seo/StructuredData';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { ErrorDisplay } from '@/components/ui/ErrorDisplay';
-import { Button } from '@/components/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
-import { notFound } from 'next/navigation';
+import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
+import Image from "next/image";
+import { useProduct } from "@/hooks/useProducts";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { ErrorDisplay } from "@/components/ui/ErrorDisplay";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { notFound } from "next/navigation";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -54,24 +54,38 @@ export default function ProductDetailPage() {
   }
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
     }).format(price);
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   const getStockStatus = (stock: number) => {
-    if (stock === 0) return { label: 'Out of Stock', color: 'text-red-600', bgColor: 'bg-red-100' };
-    if (stock < 10) return { label: 'Low Stock', color: 'text-yellow-600', bgColor: 'bg-yellow-100' };
-    return { label: 'In Stock', color: 'text-green-600', bgColor: 'bg-green-100' };
+    if (stock === 0)
+      return {
+        label: "Out of Stock",
+        color: "text-red-600",
+        bgColor: "bg-red-100",
+      };
+    if (stock < 10)
+      return {
+        label: "Low Stock",
+        color: "text-yellow-600",
+        bgColor: "bg-yellow-100",
+      };
+    return {
+      label: "In Stock",
+      color: "text-green-600",
+      bgColor: "bg-green-100",
+    };
   };
 
   const stockStatus = getStockStatus(product.stock);
@@ -84,10 +98,20 @@ export default function ProductDetailPage() {
         <Button
           variant="outline"
           onClick={() => router.back()}
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 bg-[#E268D4]"
         >
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
           Back to Products
         </Button>
@@ -95,12 +119,12 @@ export default function ProductDetailPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Product Images */}
-        <div className="space-y-4">
+        <div className="space-y-4 bg-[#E268D4]">
           <Card>
             <CardContent className="p-0">
               <div className="aspect-square w-full overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700 relative">
                 <Image
-                  src={product.thumbnail || '/placeholder-product.jpg'}
+                  src={product.thumbnail || "/placeholder-product.jpg"}
                   alt={product.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -117,7 +141,10 @@ export default function ProductDetailPage() {
           {product.images && product.images.length > 1 && (
             <div className="grid grid-cols-4 gap-2">
               {product.images.slice(0, 4).map((image, index) => (
-                <div key={index} className="aspect-square overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700 relative">
+                <div
+                  key={index}
+                  className="aspect-square overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700 relative"
+                >
                   <Image
                     src={image}
                     alt={`${product.title} ${index + 1}`}
@@ -134,15 +161,21 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Product Details */}
-        <div className="space-y-6">
-          <Card>
+        <div className="space-y-6 ">
+          <Card className="bg-[#E268D4]">
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div>
-                  <CardTitle className="text-2xl mb-2">{product.title}</CardTitle>
-                  <p className="text-gray-600 dark:text-gray-400">{product.brand}</p>
+                  <CardTitle className="text-2xl mb-2">
+                    {product.title}
+                  </CardTitle>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {product.brand}
+                  </p>
                 </div>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${stockStatus.bgColor} ${stockStatus.color}`}>
+                <span
+                  className={`px-3 py-1 rounded-full text-sm font-medium ${stockStatus.bgColor} ${stockStatus.color}`}
+                >
                   {stockStatus.label}
                 </span>
               </div>
@@ -168,8 +201,8 @@ export default function ProductDetailPage() {
                       key={i}
                       className={`h-5 w-5 ${
                         i < Math.floor(product.rating)
-                          ? 'text-yellow-400'
-                          : 'text-gray-300 dark:text-gray-600'
+                          ? "text-yellow-400"
+                          : "text-gray-300 dark:text-gray-600"
                       }`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
@@ -185,7 +218,9 @@ export default function ProductDetailPage() {
 
               {/* Description */}
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">Description</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                  Description
+                </h3>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   {product.description}
                 </p>
@@ -194,25 +229,33 @@ export default function ProductDetailPage() {
               {/* Product Info */}
               <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <div>
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Category</dt>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    Category
+                  </dt>
                   <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 capitalize">
                     {product.category}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Stock</dt>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    Stock
+                  </dt>
                   <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100">
                     {product.stock} units available
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Brand</dt>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    Brand
+                  </dt>
                   <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100">
                     {product.brand}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Added</dt>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    Added
+                  </dt>
                   <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100">
                     {formatDate(product.createdAt)}
                   </dd>
