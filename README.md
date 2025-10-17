@@ -274,3 +274,26 @@ git commit -m "Complete Code For Lotus Beta Analytic Assessment"
 git branch -M main
 git remote add origin https://github.com/Minamyle/SPA.git
 git push -u origin main
+
+**This is what I will do next with more time**
+
+**Complete User Authentication System**
+- Implement actual login/logout functionality (currently just a placeholder page)
+- Add user registration and password reset
+- JWT token management with refresh tokens
+- Protected routes for admin features
+- User roles (customer, admin, vendor)
+
+**Full Checkout Process**
+- Replace the placeholder checkout button with a complete flow
+- Payment integration (Stripe, PayPal)
+- Order confirmation and email receipts
+- Order status tracking
+- Guest checkout option
+
+**Product Reviews & Ratings System**
+- Allow users to leave reviews and ratings
+- Display average ratings and review counts
+- Review moderation for admins
+- Photo uploads in reviews
+- Helpful/not helpful voting
