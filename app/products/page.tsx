@@ -385,7 +385,7 @@ function ProductsPageContent() {
                 </div>
                 <Button
                   onClick={() => router.push("/products/new")}
-                  className="sm:w-auto"
+                  className="sm:w-auto bg-[#E268D4]"
                 >
                   Add Product
                 </Button>
